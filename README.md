@@ -1,36 +1,28 @@
 # gene-dosage-sepio-transformer
 
-FIXME: description
+Transforms raw gene dosage curations from JIRA API format into SEPIO. Supports Kafka Streams
 
 ## Installation
 
-Download from http://example.com/FIXME.
+Clone the Git repository; may be run as either a JAR file (compile using lein uberjar) or using Docker.
 
 ## Usage
 
-FIXME: explanation
+For non-docker usage:
 
-    $ java -jar gene-dosage-sepio-transformer-0.1.0-standalone.jar [args]
+    $ java -jar gene-dosage-sepio-transformer.jar
 
 ## Options
 
-FIXME: listing of options this app accepts.
+The following environment variables are expected to be set, specifying the kafka host, user, and password respectively:
 
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+KAFKA_HOST
+KAFKA_USER
+KAFKA_PASSWORD
 
 ## License
 
-Copyright © 2019 FIXME
+Copyright © 2019 
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
