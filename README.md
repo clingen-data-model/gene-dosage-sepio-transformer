@@ -17,12 +17,14 @@ For non-docker usage:
 The following environment variables are expected to be set, specifying the kafka host, user, and password respectively:
 
 KAFKA_HOST
+
 KAFKA_USER
+
 KAFKA_PASSWORD
 
 ## License
 
-Copyright © 2019 
+Copyright © 2019
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
