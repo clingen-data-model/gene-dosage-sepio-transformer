@@ -2,12 +2,17 @@
   (:require [gene-dosage-sepio-transformer.transform :as transform]
             [clojure.java.io :as io]
             [jackdaw.streams :as j]
-            [jackdaw.serdes :as j-serde])
+            [jackdaw.serdes :as j-serde]
+            [taoensso.timbre :as log]
+            [org.httpkit.server :as server])
   (:gen-class))
 
 (def app-config {:kafka-host (System/getenv "KAFKA_HOST")
                  :kafka-user (System/getenv "KAFKA_USER")
                  :kafka-password (System/getenv "KAFKA_PASSWORD")})
+
+(defonce stream (atom nil))
+(defonce server (atom nil))
 
 (defn kafka-config 
   "Expects, at a minimum, :user and :password in opts. "
@@ -56,10 +61,24 @@
       (if-let [fname (re-find #"ISCA.*$" (first r))]
         (spit (str destination fname) (second r))))))
 
+(def running-states #{:re-balancing :running :created})
+
+(defn status [req]
+  (let [msg (str "gene-dosage-sepio-transformer is " (name (j/state @stream)))]
+    (if (and @stream (running-states (j/state @stream)))
+      {:status 200
+       :headers {"Content-Type" "text/plain"}
+       :body msg}
+      {:status 503
+       :headers {"Content-Type" "text/plain"}
+       :body msg})))
+
 (defn -main
   "Run the Kafka stream converting raw JIRA messages to SEPIO."
   [& args]
+  (log/set-level! :info)
+  (reset! server (server/run-server status {:port 8080}))
   (let [builder (topology (:input topic-metadata) (:output topic-metadata))
         app (j/kafka-streams builder (kafka-config app-config))]
     (j/start app)
-    app))
+    (reset! stream app)))

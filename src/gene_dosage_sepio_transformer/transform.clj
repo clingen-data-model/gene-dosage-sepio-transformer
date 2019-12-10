@@ -23,6 +23,7 @@
                                   ["GENO" "http://purl.obolibrary.org/obo/GENO_"]
                                   ["IAO" "http://purl.obolibrary.org/obo/IAO_"]
                                   ["DCT" "http://purl.org/dc/terms/"]
+                                  ["SO" "http://purl.obolibrary.org/obo/SO_"]
                                   ["has_evidence_with_item" {"@id" "SEPIO:0000189"
                                                              "@type" "@id"}]
                                   ["has_predicate" {"@id" "SEPIO:0000389"
@@ -62,7 +63,8 @@
                                   ["sequence_id" {"@id" "GENO:0000967"
                                                   "@type" "@id"}]
                                   ["SimpleInterval" "GENO:0000965"]
-                                  ["SequenceLocation" "GENO:0000815"]]))
+                                  ["SequenceLocation" "GENO:0000815"]
+                                  ["SequenceFeature" "SO:0000110"]]))
 
 (def frontmatter-fields {"title" :title
                          "updated" :modified
@@ -72,30 +74,59 @@
 (def cg-prefix "http://dx.clinicalgenome.org/entities/")
 (def region-prefix (str cg-prefix "region-"))
 
-(def chr-to-ref {"chr1" "NCBI_NU:NC_000001.10"
-                 "chr2" "NCBI_NU:NC_000002.11"
-                 "chr3" "NCBI_NU:NC_000003.11"
-                 "chr4" "NCBI_NU:NC_000004.11"
-                 "chr5" "NCBI_NU:NC_000005.9"
-                 "chr6" "NCBI_NU:NC_000006.11"
-                 "chr7" "NCBI_NU:NC_000007.13"
-                 "chr8" "NCBI_NU:NC_000008.10"
-                 "chr9" "NCBI_NU:NC_000009.11"
-                 "chr10" "NCBI_NU:NC_000010.10"
-                 "chr11" "NCBI_NU:NC_000011.9"
-                 "chr12" "NCBI_NU:NC_000012.11"
-                 "chr13" "NCBI_NU:NC_000013.10"
-                 "chr14" "NCBI_NU:NC_000014.8"
-                 "chr15" "NCBI_NU:NC_000015.9"
-                 "chr16" "NCBI_NU:NC_000016.9"
-                 "chr17" "NCBI_NU:NC_000017.10"
-                 "chr18" "NCBI_NU:NC_000018.9"
-                 "chr19" "NCBI_NU:NC_000019.9"
-                 "chr20" "NCBI_NU:NC_000020.10"
-                 "chr21" "NCBI_NU:NC_000021.8"
-                 "chr22" "NCBI_NU:NC_000022.10"
-                 "chrX" "NCBI_NU:NC_000023.10"
-                 "chrY" "NCBI_NU:NC_000024.9"})
+(def chr-to-ref {:grch37 {"chr1" "NCBI_NU:NC_000001.10"
+                          "chr2" "NCBI_NU:NC_000002.11"
+                          "chr3" "NCBI_NU:NC_000003.11"
+                          "chr4" "NCBI_NU:NC_000004.11"
+                          "chr5" "NCBI_NU:NC_000005.9"
+                          "chr6" "NCBI_NU:NC_000006.11"
+                          "chr7" "NCBI_NU:NC_000007.13"
+                          "chr8" "NCBI_NU:NC_000008.10"
+                          "chr9" "NCBI_NU:NC_000009.11"
+                          "chr10" "NCBI_NU:NC_000010.10"
+                          "chr11" "NCBI_NU:NC_000011.9"
+                          "chr12" "NCBI_NU:NC_000012.11"
+                          "chr13" "NCBI_NU:NC_000013.10"
+                          "chr14" "NCBI_NU:NC_000014.8"
+                          "chr15" "NCBI_NU:NC_000015.9"
+                          "chr16" "NCBI_NU:NC_000016.9"
+                          "chr17" "NCBI_NU:NC_000017.10"
+                          "chr18" "NCBI_NU:NC_000018.9"
+                          "chr19" "NCBI_NU:NC_000019.9"
+                          "chr20" "NCBI_NU:NC_000020.10"
+                          "chr21" "NCBI_NU:NC_000021.8"
+                          "chr22" "NCBI_NU:NC_000022.10"
+                          "chrX" "NCBI_NU:NC_000023.10"
+                          "chrY" "NCBI_NU:NC_000024.9"}
+                 :grch38 {"chr1" "NCBI_NU:NC_000001.11"
+                          "chr2" "NCBI_NU:NC_000002.12"
+                          "chr3" "NCBI_NU:NC_000003.12"
+                          "chr4" "NCBI_NU:NC_000004.12"
+                          "chr5" "NCBI_NU:NC_000005.10"
+                          "chr6" "NCBI_NU:NC_000006.12"
+                          "chr7" "NCBI_NU:NC_000007.14"
+                          "chr8" "NCBI_NU:NC_000008.11"
+                          "chr9" "NCBI_NU:NC_000009.12"
+                          "chr10" "NCBI_NU:NC_000010.11"
+                          "chr11" "NCBI_NU:NC_000011.10"
+                          "chr12" "NCBI_NU:NC_000012.12"
+                          "chr13" "NCBI_NU:NC_000013.11"
+                          "chr14" "NCBI_NU:NC_000014.9"
+                          "chr15" "NCBI_NU:NC_000015.10"
+                          "chr16" "NCBI_NU:NC_000016.10"
+                          "chr17" "NCBI_NU:NC_000017.11"
+                          "chr18" "NCBI_NU:NC_000018.10"
+                          "chr19" "NCBI_NU:NC_000019.10"
+                          "chr20" "NCBI_NU:NC_000020.11"
+                          "chr21" "NCBI_NU:NC_000021.9"
+                          "chr22" "NCBI_NU:NC_000022.11"
+                          "chrX" "NCBI_NU:NC_000023.11"
+                          "chrY" "NCBI_NU:NC_000024.10"}})
+
+(def build-location {:grch38 :customfield-10532
+                     :grch37 :customfield-10160}) 
+
+
 
 (defn- -format-jira-datetime-string
   "Corrects flaw in JIRA's formatting of datetime strings. By default JIRA does not
@@ -137,16 +168,24 @@
   [interp dosage]
   (remove nil? (map #(construct-study-finding interp %) (evidence-field-map dosage))))
 
-(defn- construct-location [interp]
-  (when-let [loc-str (get-in interp [:fields :customfield-10160])]
+(defn- construct-sequence-location [interp build]
+  (when-let [loc-str (get-in interp [:fields (build-location build)])]
     (let [[_ chr start-coord end-coord] (re-find #"(\w+):(.+)-(.+)$" loc-str)]
       {:type "SequenceLocation"
-       :id (str region-prefix (:key interp))
-       :label (get-in interp [:fields :customfield-10202])
-       :sequence-id (chr-to-ref chr)
+       :sequence-id (-> chr-to-ref
+                        (get build)
+                        (get chr))
        :interval {:type "SimpleInterval" ; sequence interval
                   :start (-> start-coord (s/replace #"\D" "") Integer.)
                   :end (-> end-coord (s/replace #"\D" "") Integer.)}})))
+
+(defn- construct-location [interp]
+  {:id (str region-prefix (:key interp))
+   :label (get-in interp [:fields :customfield-10202])
+   :type "SequenceFeature"
+   :has-location (->> (keys build-location)
+                      (map #(construct-sequence-location interp %))
+                      (remove nil?))})
 
 (defn- location-id [interp]
   (str region-prefix (:key interp)))
