@@ -46,10 +46,16 @@
     :key-serde (j-serde/string-serde)
     :value-serde (j-serde/string-serde)}})
 
+(defn transform-to-sepio [v]
+  (log/info :transform-to-sepio :received :v v)
+  (let [transformed (transform/interpretation-to-sepio v)]
+    (log/info :transform-to-sepio :transformed transformed)
+    transformed))
+
 (defn topology [in-topic out-topic]
   (let [builder (j/streams-builder)]
     (-> (j/kstream builder in-topic)
-        (j/map (fn [[_ v]] (transform/interpretation-to-sepio v)))
+        (j/map (fn [[_ v]] (transform-to-sepio v)))
         (j/to out-topic))
     builder))
 
