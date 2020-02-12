@@ -1,4 +1,4 @@
-(defproject gene-dosage-sepio-transformer "v2"
+(defproject gene-dosage-sepio-transformer "v3"
   :description "Uses Kafka Streams to transform raw JIRA output to Gene Dosage SEPIO form"
   :url "https://github.com/clingen-data-model/gene-dosage-sepio-transformer"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"

@@ -7,9 +7,11 @@
             [org.httpkit.server :as server])
   (:gen-class))
 
-(def app-config {:kafka-host (System/getenv "KAFKA_HOST")
+(def app-config {:application-id (System/getenv "KAFKA_APPLICATION_ID")
+                 :kafka-host (System/getenv "KAFKA_HOST")
                  :kafka-user (System/getenv "KAFKA_USER")
                  :kafka-password (System/getenv "KAFKA_PASSWORD")})
+
 
 (defonce stream (atom nil))
 (defonce server (atom nil))
@@ -17,7 +19,7 @@
 (defn kafka-config 
   "Expects, at a minimum, :user and :password in opts. "
   [opts]
-  {"application.id" "gene-dosage-sepio-transformer"
+  {"application.id" (get app-config :application-id "gene-dosage-sepio-transformer")
    "ssl.endpoint.identification.algorithm" "https"
    "sasl.mechanism" "PLAIN"
    "request.timeout.ms" "20000"
